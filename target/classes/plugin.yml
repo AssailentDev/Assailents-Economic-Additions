@@ -1,0 +1,24 @@
+name: EconomicAdditons
+version: '0.0.1'
+main: me.assailent.economicadditions.EconomicAdditions
+api-version: '1.20'
+loadbefore: [EzChestShop]
+commands:
+  economy:
+    usage: /economy <bal | give | take> <player> <amount>
+    description: Gives money to a player
+    permission: EconomicAdditions.economyadmin
+  bal:
+    usage: /bal [player]
+    aliases: ['balance', 'money']
+    description: See how much money you have!
+    permission: EconomicAdditions.balance
+  pay:
+    usage: /pay <player> <amount>
+    description: Pay another player!
+    permission: EconomicAdditions.pay
+  toggleactionbar:
+    usage: /toggleactionbar
+    aliases: ['actionbar', 'ab']
+    description: Toggled the action bar!
+    permission: EconomicAdditions.toggleactionbar

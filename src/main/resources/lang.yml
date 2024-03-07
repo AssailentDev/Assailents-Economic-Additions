@@ -1,0 +1,23 @@
+economy:
+  currency-singular: "Sheep"
+  currency-plural: "Sheeps"
+  starting-money: 1500
+  error-color: "<#EB7272>"
+  success-color: "<#A6F8C6>"
+  sender-not-a-player: "Only players can use this command!"
+  target-hasnt-played-before: "The player %parse% has never played on this server before!"
+  balance: "%parse%'s balance: %currency%"
+  non-valid-number: "The amount must be a valid decimal number. Got: '%parse%'."
+  took-money: "Took %currency% from %parse%'s account."
+  gave-money: "Gave %currency% to %parse%'s account."
+  not-enough-money: "You don't have enough money to pay %parse%"
+  paid-player: "You paid %parse% %currency%"
+  recieved-money: "You were paid %currency% from %parse%"
+  no-permission: "You don't have permission for this command!"
+actionbar:
+  enabled: true
+  update: 2
+  text: "<gray>%vault_eco_balance% Sheeps"
+  toggle-on-text: "<green>Action bar toggled ON!"
+  toggle-off-text: "<red>Action bar toggled off!"
+  sender-not-a-player: "Only players can use this command!"
