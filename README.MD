@@ -3,8 +3,9 @@
 ### Version v0.0.2 For 1.20.4 Paper
 
 #### Contact Me:
-For now I am available at the following discord. \
-`mini_assailent`
+Currently I am available at the following discord. \
+`mini_assailent` \
+In the future I may produce a special discord for this plugin and my upcoming plugins.
 
 #### Commands:
  
