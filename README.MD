@@ -1,3 +1,42 @@
+# Economic Additions
+## A Highly Customisable Economy Plugin.
+### Version v0.0.2
+
+#### Commands:
+ 
+* **/economy** \
+**/economy <bal | give | take | set> \<player> \[\<amount>]** \
+Requires the permission "EconomicAdditions.economyadmin", \
+/economy bal \<player> outputs the balance of a player. \
+/economy give \<player> \<amount> adds the given amount to a players balance \
+/economy take \<player> \<amount> removes the given amount from a players balance \
+/economy set \<player> \<amount> sets the players balance to the given amount
+* **/bal** \
+**/bal [player]** \
+Aliases: "balance"\
+Requires the permission "EconomicAdditions.balance" \
+/bal outputs the balance of yourself. \
+Requires the permission "EconomicAdditions.balance.others" \
+/bal \[player] outputs the balance of the given player.
+* **/pay** \
+**/pay \<player> \<amount>** \
+Requires the permission "EconomicAdditions.pay" \
+/pay \<player> \<amount> pays the given player the amount specified from the users balance.
+* **/toggleactionbar** \
+**/toggleactionbar** \
+Aliases: "actionbar", "ab" \
+Requires the permission "EconomicAdditions.toggleactionbar" \
+/toggleactionbar turns the action bar on / off.
+
+#### Configuration
+
+##### Config.yml
+```yml
+prefix: "<gray>[<gold>Economic Additions<gray>] " # Sets the prefix of messages sent by the plugin.
+```
+
+##### Lang.yml
+```yaml
 economy:
   currency-singular: "Sheep" # What does the currency show up as when its singular e.g. "1 Sheep"
   currency-plural: "Sheeps" # What does the currency show up as when its plural e.g. "120 Sheeps"
@@ -22,3 +61,4 @@ actionbar:
   toggle-on-text: "<green>Action bar toggled ON!" # Chat message when /toggleactionbar turns the action bar on.
   toggle-off-text: "<red>Action bar toggled off!" # Chat message when /toggleactionbar turns the action bar off.
   sender-not-a-player: "Only players can use this command!" # Runs when the sender of the command is not a player!
+```

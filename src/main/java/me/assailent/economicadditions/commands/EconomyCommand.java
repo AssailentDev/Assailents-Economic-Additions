@@ -84,6 +84,14 @@ public class EconomyCommand implements TabExecutor {
                                 else {
                                     sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("success-color") + parse.parse(lang.getString("took-money"), playerName, VaultHook.formatCurrencySymbol(amount))));
                                 }
+                            } else if ("set".equals(param)) {
+                                String errorMessage = VaultHook.set(target, amount);
+                                if (errorMessage != null && !errorMessage.isEmpty())
+                                    sender.sendMessage(ChatColor.RED + "Error: " + errorMessage);
+                                else {
+                                    sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("success-color") + parse.parse(lang.getString("set-money"), playerName, VaultHook.formatCurrencySymbol(amount))));
+                                }
+
                             } else {
                                 String errorMessage = VaultHook.give(target, amount);
 

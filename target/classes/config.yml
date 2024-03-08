@@ -1,2 +1,1 @@
-prefix: "<gray>[<gold>Economic Additions<gray>] "
-currency: "sheep"
+prefix: "<gray>[<gold>Economic Additions<gray>] " # Sets the prefix of messages sent by the plugin.
