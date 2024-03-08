@@ -1,18 +1,19 @@
 package me.assailent.economicadditions;
 
 import me.assailent.economicadditions.actionbar.ActionBar;
-import me.assailent.economicadditions.commands.*;
+import me.assailent.economicadditions.commands.ActionBarCommand;
+import me.assailent.economicadditions.commands.BalanceCommand;
+import me.assailent.economicadditions.commands.EconomyCommand;
+import me.assailent.economicadditions.commands.PayCommand;
 import me.assailent.economicadditions.database.EconomyDatabase;
 import me.assailent.economicadditions.events.ActionBarJoin;
 import me.assailent.economicadditions.hooks.AssailEconomy;
 import me.assailent.economicadditions.hooks.VaultHook;
 import me.assailent.economicadditions.utilities.Parsing;
-import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Item;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.swing.*;
@@ -34,8 +35,8 @@ public final class EconomicAdditions extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
+        parser = new Parsing();
         plugin = this;
-
         saveResource("config.yml", false);
         saveDefaultConfig();
         createLangConfig();
@@ -43,6 +44,16 @@ public final class EconomicAdditions extends JavaPlugin {
         if (getServer().getPluginManager().getPlugin("Vault") != null) {
             AssailEconomy.register();
         }
+
+        getCommand("economy").setExecutor(new EconomyCommand());
+        getCommand("economy").setTabCompleter(new EconomyCommand());
+        getCommand("pay").setExecutor(new PayCommand());
+        getCommand("pay").setTabCompleter(new PayCommand());
+        getCommand("bal").setExecutor(new BalanceCommand());
+        getCommand("bal").setTabCompleter(new BalanceCommand());
+
+        getServer().getPluginManager().registerEvents(new ActionBarJoin(), this);
+        getCommand("toggleactionbar").setExecutor(new ActionBarCommand());
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null && langConfig.getConfigurationSection("actionbar").getBoolean("enabled")) {
             getLogger().info("PlaceholderAPI hooked into");
@@ -64,19 +75,6 @@ public final class EconomicAdditions extends JavaPlugin {
             Bukkit.getLogger().severe("Failed to connect to the database! " + e.getMessage());
             Bukkit.getPluginManager().disablePlugin(this);
         }
-
-        parser = new Parsing();
-
-        getCommand("economy").setExecutor(new EconomyCommand());
-        getCommand("economy").setTabCompleter(new EconomyCommand());
-        getCommand("pay").setExecutor(new PayCommand());
-        getCommand("pay").setTabCompleter(new PayCommand());
-        getCommand("bal").setExecutor(new BalanceCommand());
-        getCommand("bal").setTabCompleter(new BalanceCommand());
-
-        getServer().getPluginManager().registerEvents(new ActionBarJoin(), this);
-        getCommand("toggleactionbar").setExecutor(new ActionBarCommand());
-
     }
 
     @Override

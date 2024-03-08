@@ -5,12 +5,12 @@ api-version: '1.20'
 loadbefore: [EzChestShop]
 commands:
   economy:
-    usage: /economy <bal | give | take | set> <player> [<amount>]
+    usage: /economy <bal | give | take> <player> <amount>
     description: Gives money to a player
     permission: EconomicAdditions.economyadmin
   bal:
     usage: /bal [player]
-    aliases: ['balance']
+    aliases: ['balance', 'money']
     description: See how much money you have!
     permission: EconomicAdditions.balance
   pay:

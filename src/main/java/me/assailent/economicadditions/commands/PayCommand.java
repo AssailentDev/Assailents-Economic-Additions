@@ -44,13 +44,9 @@ public class PayCommand implements TabExecutor {
             public void run() {
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
 
-                try {
-                    if (!target.hasPlayedBefore() || !(plugin.getEconomyDatabase().playerExists(target))) {
-                        sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("error-color") + parse.parse(lang.getString("target-hasnt-played-before"), args[0], "")));
-                        return;
-                    }
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
+                if (!target.hasPlayedBefore()) {
+                    sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("error-color") + parse.parse(lang.getString("target-hasnt-played-before"), args[0], "")));
+                    return;
                 }
 
                 double amount;

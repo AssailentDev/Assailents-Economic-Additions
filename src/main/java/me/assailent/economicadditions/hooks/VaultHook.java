@@ -45,17 +45,6 @@ public class VaultHook {
         return econ.withdrawPlayer(target, amount).errorMessage;
     }
 
-    public static String set(OfflinePlayer target, double amount) {
-        if (!hasEconomy())
-            throw new UnsupportedOperationException("Vault Economy not found call hasEconomy() to check it first.");
-        double balance = econ.getBalance(target);
-        if (amount > balance) {
-            return econ.depositPlayer(target, amount - balance).errorMessage;
-        } else {
-            return econ.withdrawPlayer(target, balance - amount).errorMessage;
-        }
-    }
-
     public static String give(OfflinePlayer target, double amount) {
         if (!hasEconomy())
             throw new UnsupportedOperationException("Vault Economy not found call hasEconomy() to check it first.");
