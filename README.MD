@@ -2,6 +2,10 @@
 ## A Highly Customisable Economy Plugin.
 ### Version v0.0.2 For 1.20.4 Paper
 
+#### Contact Me:
+For now I am available at the following discord. \
+`mini_assailent`
+
 #### Commands:
  
 * **/economy** \
