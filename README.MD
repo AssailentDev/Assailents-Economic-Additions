@@ -1,6 +1,6 @@
 # Economic Additions
 ## A Highly Customisable Economy Plugin.
-### Version v0.0.2
+### Version v0.0.2 For 1.20.4 Paper
 
 #### Commands:
  
