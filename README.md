@@ -9,30 +9,30 @@ https://www.spigotmc.org/resources/placeholderapi.6245/
 ## Commands & Permissions
 As the Introduction says, with the goal to stay bloat free there are only a couple commands.
 ### Admin Commands
-* /economy <bal | give | take> \<player> \<amount>
-Get the balance of a player, give the player money, or take money from the player.
-Permission Required: `EconomicAdditions.economygui`
+* /economy <bal | give | take> \<player> \<amount> \
+Get the balance of a player, give the player money, or take money from the player. \
+Permission Required: `EconomicAdditions.economygui` \
 Aliases: N/A
 
 ### User Commands
-* /bal [player] 
-This returns the balance of a player.
-Permission Required: `EconomicAdditions.balance` and `EconomicAdditions.balance.others`
+* /bal [player]  \
+This returns the balance of a player. \
+Permission Required: `EconomicAdditions.balance` and `EconomicAdditions.balance.others` \
 Aliases: /balance
 
-* /pay \<player> \<amount>
-This pays a player from you're balance.
-Permission Required: `EconomicAdditions.pay`
+* /pay \<player> \<amount> \
+This pays a player from you're balance. \
+Permission Required: `EconomicAdditions.pay` \
 Aliases: N/A
 
-* /toggleactionbar
-This toggles the action bar above the players hotbar (See Custom Features)
-Permission Required: `EconomicAdditions.toggleactionbar`
+* /toggleactionbar \
+This toggles the action bar above the players hotbar (See Custom Features) \
+Permission Required: `EconomicAdditions.toggleactionbar` \
 Aliases: /actionbar /ab
 
-* /economygui
-Opens the economy gui (Allows for paying and balances, Balances are viewable no matter the permissions)
-Permission Required: `EconomicAdditions.economygui`
+* /economygui \
+Opens the economy gui (Allows for paying and balances, Balances are viewable no matter the permissions) \
+Permission Required: `EconomicAdditions.economygui` \
 Aliases: /econgui /econ /egui /money
 
 ## Custom Features
@@ -49,15 +49,15 @@ It also has page support if you have more than 27 players online and everything 
 
 ## Configuration
 
-In the configuration files pretty much two types of configuration that you need to know about;
-Normal Configuration,
+In the configuration files pretty much two types of configuration that you need to know about; \
+Normal Configuration, \
 Items.
 
 ### Normal Configuration
 This is pretty straight forward. Things like `starting-money: 1500` mean that players start with 1500. And doesn't require much thought. This is also where almost EVERY message in the plugin can be customised (Including translated or completely different messages. (Note: not everything in the first `economy` section will have access to PlaceholderAPI sadly. This will be fixed in a future update as well as a cleanup of the config!
 
 ### Items
-Items are mainly defined within the `gui/economy:` section; and have a few key features!
+Items are mainly defined within the `gui/economy:` section; and have a few key features! \
 Here is an example item
 ```yml
 TestItem:
@@ -70,8 +70,8 @@ TestItem:
     - "You can have as many lines as you want!"
     - "I support MiniMessage and PlaceholderAPI format!"
  ```
- This item wouldn't show up as the plugin doesnt call for it. This is why you must NOT! Change the names of the variables in the lang.yml.
- You can add CustomModelData to the items with just a simple line at the bottom
+ This item wouldn't show up as the plugin doesnt call for it. This is why you must NOT! Change the names of the variables in the lang.yml. \
+ You can add CustomModelData to the items with just a simple line at the bottom \
  Example:
  ```yml
  TestItem:
