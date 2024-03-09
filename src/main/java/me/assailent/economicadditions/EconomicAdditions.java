@@ -1,12 +1,10 @@
 package me.assailent.economicadditions;
 
 import me.assailent.economicadditions.actionbar.ActionBar;
-import me.assailent.economicadditions.commands.ActionBarCommand;
-import me.assailent.economicadditions.commands.BalanceCommand;
-import me.assailent.economicadditions.commands.EconomyCommand;
-import me.assailent.economicadditions.commands.PayCommand;
+import me.assailent.economicadditions.commands.*;
 import me.assailent.economicadditions.database.EconomyDatabase;
 import me.assailent.economicadditions.events.ActionBarJoin;
+import me.assailent.economicadditions.events.GuiListener;
 import me.assailent.economicadditions.hooks.AssailEconomy;
 import me.assailent.economicadditions.hooks.VaultHook;
 import me.assailent.economicadditions.utilities.Parsing;
@@ -51,6 +49,9 @@ public final class EconomicAdditions extends JavaPlugin {
         getCommand("pay").setTabCompleter(new PayCommand());
         getCommand("bal").setExecutor(new BalanceCommand());
         getCommand("bal").setTabCompleter(new BalanceCommand());
+
+        getServer().getPluginManager().registerEvents(new GuiListener(), this);
+        getCommand("economygui").setExecutor(new EconomyGuiCommand());
 
         getServer().getPluginManager().registerEvents(new ActionBarJoin(), this);
         getCommand("toggleactionbar").setExecutor(new ActionBarCommand());
