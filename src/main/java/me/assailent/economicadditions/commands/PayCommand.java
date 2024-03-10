@@ -44,7 +44,7 @@ public class PayCommand implements TabExecutor {
             public void run() {
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
 
-                if (!target.hasPlayedBefore()) {
+                if (!target.hasPlayedBefore() && !target.isOnline()) {
                     sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("error-color") + parse.parse(lang.getString("target-hasnt-played-before"), args[0], "")));
                     return;
                 }

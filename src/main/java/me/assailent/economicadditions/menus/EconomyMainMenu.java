@@ -128,8 +128,8 @@ public class EconomyMainMenu {
             if (p == player) {
                 continue;
             }
+            inventory.setItem(slotsUsed, ItemStacks.createItemStack(balMenu.getConfigurationSection("playerHead"), "economicadditions.item.empty", "true", p));
             slotsUsed++;
-            inventory.setItem(i, ItemStacks.createItemStack(balMenu.getConfigurationSection("playerHead"), "economicadditions.item.empty", "true", p));
         }
         for (int iterator = slotsUsed; iterator < (9 * 4); iterator++) {
             if (iterator == 28 || iterator == 34) {
@@ -180,8 +180,8 @@ public class EconomyMainMenu {
             if (p == player) {
                 continue;
             }
+            inventory.setItem(slotsUsed, ItemStacks.createItemStack(payMenu.getConfigurationSection("playerHead"), "economicadditions.economy.gui.pay.head", p.getUniqueId().toString(), p));
             slotsUsed++;
-            inventory.setItem(i, ItemStacks.createItemStack(payMenu.getConfigurationSection("playerHead"), "economicadditions.economy.gui.pay.head", p.getUniqueId().toString(), p));
         }
         for (int iterator = slotsUsed; iterator < (9 * 4); iterator++) {
             if (iterator == 28 || iterator == 34) {

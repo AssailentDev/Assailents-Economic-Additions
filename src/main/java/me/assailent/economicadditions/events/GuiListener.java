@@ -60,13 +60,20 @@ public class GuiListener implements Listener {
             Integer payAmount;
             try {
                 payAmount = Integer.valueOf(MiniMessage.miniMessage().serialize(event.originalMessage()));
+                if (payAmount <= 0) {
+                    event.getPlayer().sendMessage(MiniMessage.miniMessage().deserialize("<red>Cancelling Payment!"));
+                    event.setCancelled(true);
+                    event.getPlayer().removeMetadata("economicadditions.economy.gui.pay.command", plugin);
+                }
                 Player target = Bukkit.getPlayer(UUID.fromString(event.getPlayer().getMetadata("economicadditions.economy.gui.pay.command").get(0).asString()));
                 event.getPlayer().performCommand("pay " + target.getName() + " " + payAmount);
                 event.setCancelled(true);
                 EconomyMainMenu.openInv(event.getPlayer());
+                event.getPlayer().removeMetadata("economicadditions.economy.gui.pay.command", plugin);
             } catch (NumberFormatException e) {
                 event.getPlayer().sendMessage(MiniMessage.miniMessage().deserialize("<red>Cancelling Payment!"));
                 event.setCancelled(true);
+                event.getPlayer().removeMetadata("economicadditions.economy.gui.pay.command", plugin);
             }
         }
     }
