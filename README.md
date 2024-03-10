@@ -35,6 +35,11 @@ Opens the economy gui (Allows for paying and balances, Balances are viewable no 
 Permission Required: `EconomicAdditions.economygui` \
 Aliases: /econgui /econ /egui /money
 
+* /stockdisplay \
+This toggles the Stock display (See Custom Features) \
+Permission Required: `EconomicAdditions.stockdisplay` \
+Aliases: /toggledisplay /togglestock /toggletickdisplay /stock /display /tickdisplay
+
 ## Custom Features
 ### Mini Message support
 Every message supports AdventureLib mini message formatting! Allowing for gradients, custom colours and etc...
@@ -42,6 +47,9 @@ Link to MiniMessage Formats: https://docs.advntr.dev/minimessage/format.html
 
 ### Action Bar
 The action bar is a display that can be toggled in the lang.yml (See Configuration), By default it updates every 2 seconds and displays the balance of the player and the name of the currency above it.
+
+### Stock display
+This essentially is just a title that appears and ticks up from 80% of an amount of money recieved or taken up to the full %. Can be toggled in the lang.yml (See Configuration)
 
 ### Economy Gui
 Just a basic UI that allows the player to Pay, View Balances, And other stats in the form of a UI!
@@ -93,112 +101,122 @@ prefix: "<gray>[<gold>Economic Additions<gray>] "
 
 #### Lang.yml
 ```yml
-economy:  
-  currency-singular: "Sheep"  
-  currency-plural: "Sheeps"  
-  starting-money: 1500  
-  error-color: "<#EB7272>"  
-  success-color: "<#A6F8C6>"  
-  sender-not-a-player: "Only players can use this command!"  
-  target-hasnt-played-before: "The player %parse% has never played on this server before!"  
-  balance: "%parse%'s balance: %currency%"  
-  non-valid-number: "The amount must be a valid decimal number. Got: '%parse%'."  
-  took-money: "Took %currency% from %parse%'s account."  
-  gave-money: "Gave %currency% to %parse%'s account."  
-  not-enough-money: "You don't have enough money to pay %parse%"  
-  paid-player: "You paid %parse% %currency%"  
-  recieved-money: "You were paid %currency% from %parse%"  
-  no-permission: "You don't have permission for this command!"  
-actionbar:  
-  enabled: true  
-  update: 2  
-  text: "<gray>%vault_eco_balance% Sheeps"  
-  toggle-on-text: "<green>Action bar toggled ON!"  
-  toggle-off-text: "<red>Action bar toggled off!"  
-  sender-not-a-player: "Only players can use this command!"  
-gui:  
-  economy:  
-    mainMenu:  
-      Title: "Economic Additions"  
-  payItem:  
-        Material: 'DIAMOND'  
-  Amount: 1  
-        Title: "<gold>Pay Players!"  
-  Lore:  
-          - "<gray>Click on this to open the pay player menu!"  
-  - "<gray>EconomicAdditions"  
-  balItem:  
-        Material: 'GOLD_INGOT'  
-  Amount: 2  
-        Title: "<gold>Balances!"  
-  Lore:  
-          - "<gray>Click on this to check the balances of other players!"  
-  - "<gray>EconomicAdditions"  
-  statsItem:  
-        Material: "PLAYERHEAD"  
-  Amount: 1  
-        Title: "<gold>Stats!"  
-  Lore:  
-          - "You %player_displayname% have: "  
-  - "%vault_eco_balance% Sheeps!"  
-  emptyItem:  
-        Material: "GRAY_STAINED_GLASS_PANE"  
-  Amount: 1  
-        Title: ""  
-  payMenu:  
-      Title: "Pay Ui"  
-  pay-message: "<green>How much would you like to pay?"  
-  nextFullItem:  
-        Material: "LIME_DYE"  
-  Amount: 1  
-        Title: "<green>Next Page!"  
-  nextEmptyItem:  
-        Material: "GRAY_DYE"  
-  Amount: 1  
-        Title: "<gray>Next Page!"  
-  prevFullItem:  
-        Material: "LIME_DYE"  
-  Amount: 1  
-        Title: "<green>Previous Page!"  
-  prevEmptyItem:  
-        Material: "GRAY_DYE"  
-  Amount: 1  
-        Title: "<gray>Previous Page!"  
-  playerHead:  
-        Material: "PLAYERHEAD"  
-  Amount: 1  
-        Title: "<gold>%player_displayname%"  
-  Lore:  
-          - "Left Click to pay this player!"  
-  emptyItem:  
-        Material: "GRAY_STAINED_GLASS_PANE"  
-  Amount: 1  
-        Title: ""  
-  balMenu:  
-      Title: "Balances UI"  
-  nextFullItem:  
-        Material: "LIME_DYE"  
-  Amount: 1  
-        Title: "<green>Next Page!"  
-  nextEmptyItem:  
-        Material: "GRAY_DYE"  
-  Amount: 1  
-        Title: "<gray>Next Page!"  
-  prevFullItem:  
-        Material: "LIME_DYE"  
-  Amount: 1  
-        Title: "<green>Previous Page!"  
-  prevEmptyItem:  
-        Material: "GRAY_DYE"  
-  Amount: 1  
-        Title: "<gray>Previous Page!"  
-  playerHead:  
-        Material: "PLAYERHEAD"  
-  Amount: 1  
-        Title: "<gold>%player_displayname%'s Balance"  
-  Lore:  
-          - "%vault_eco_balance% Sheeps!"  
-  emptyItem:  
-        Material: "GRAY_STAINED_GLASS_PANE"  
-  Amount: 1  
-        Title: ""```
+economy:
+  currency-singular: "Sheep"
+  currency-plural: "Sheeps"
+  starting-money: 1500
+  error-color: "<#EB7272>"
+  success-color: "<#A6F8C6>"
+  sender-not-a-player: "Only players can use this command!"
+  target-hasnt-played-before: "The player %parse% has never played on this server before!"
+  balance: "%parse%'s balance: %currency%"
+  non-valid-number: "The amount must be a valid decimal number. Got: '%parse%'."
+  took-money: "Took %currency% from %parse%'s account."
+  gave-money: "Gave %currency% to %parse%'s account."
+  not-enough-money: "You don't have enough money to pay %parse%"
+  paid-player: "You paid %parse% %currency%"
+  recieved-money: "You were paid %currency% from %parse%"
+  no-permission: "You don't have permission for this command!"
+actionbar:
+  enabled: true
+  update: 2
+  text: "<gray>%vault_eco_balance% Sheeps"
+  toggle-on-text: "<green>Action bar toggled ON!"
+  toggle-off-text: "<red>Action bar toggled off!"
+  sender-not-a-player: "Only players can use this command!"
+stockdisplay:
+  enabled: true
+  min-amount: 2000
+  neg-prefix: "<gray>[<red>-<gray>] "
+  pos-prefix: "<gray>[<green>+<gray>] "
+  neg-suffix: " <gray>Sheeps"
+  pos-suffix: " <gray>Sheeps"
+  toggle-on-text: "<green>Stock Display toggled ON!"
+  toggle-off-text: "<red>Stock Display toggled OFF!"
+gui:
+  economy:
+    mainMenu:
+      Title: "Economic Additions"
+      payItem:
+        Material: 'DIAMOND'
+        Amount: 1
+        Title: "<gold>Pay Players!"
+        Lore:
+          - "<gray>Click on this to open the pay player menu!"
+          - "<gray>EconomicAdditions"
+      balItem:
+        Material: 'GOLD_INGOT'
+        Amount: 2
+        Title: "<gold>Balances!"
+        Lore:
+          - "<gray>Click on this to check the balances of other players!"
+          - "<gray>EconomicAdditions"
+      statsItem:
+        Material: "PLAYERHEAD"
+        Amount: 1
+        Title: "<gold>Stats!"
+        Lore:
+          - "You %player_displayname% have: "
+          - "%vault_eco_balance% Sheeps!"
+      emptyItem:
+        Material: "GRAY_STAINED_GLASS_PANE"
+        Amount: 1
+        Title: ""
+    payMenu:
+      Title: "Pay Ui"
+      pay-message: "<green>How much would you like to pay?"
+      nextFullItem:
+        Material: "LIME_DYE"
+        Amount: 1
+        Title: "<green>Next Page!"
+      nextEmptyItem:
+        Material: "GRAY_DYE"
+        Amount: 1
+        Title: "<gray>Next Page!"
+      prevFullItem:
+        Material: "LIME_DYE"
+        Amount: 1
+        Title: "<green>Previous Page!"
+      prevEmptyItem:
+        Material: "GRAY_DYE"
+        Amount: 1
+        Title: "<gray>Previous Page!"
+      playerHead:
+        Material: "PLAYERHEAD"
+        Amount: 1
+        Title: "<gold>%player_displayname%"
+        Lore:
+          - "Left Click to pay this player!"
+      emptyItem:
+        Material: "GRAY_STAINED_GLASS_PANE"
+        Amount: 1
+        Title: ""
+    balMenu:
+      Title: "Balances UI"
+      nextFullItem:
+        Material: "LIME_DYE"
+        Amount: 1
+        Title: "<green>Next Page!"
+      nextEmptyItem:
+        Material: "GRAY_DYE"
+        Amount: 1
+        Title: "<gray>Next Page!"
+      prevFullItem:
+        Material: "LIME_DYE"
+        Amount: 1
+        Title: "<green>Previous Page!"
+      prevEmptyItem:
+        Material: "GRAY_DYE"
+        Amount: 1
+        Title: "<gray>Previous Page!"
+      playerHead:
+        Material: "PLAYERHEAD"
+        Amount: 1
+        Title: "<gold>%player_displayname%'s Balance"
+        Lore:
+          - "%vault_eco_balance% Sheeps!"
+      emptyItem:
+        Material: "GRAY_STAINED_GLASS_PANE"
+        Amount: 1
+        Title: ""
+```
