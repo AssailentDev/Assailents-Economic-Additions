@@ -1,14 +1,26 @@
 package me.assailent.economicadditions.hooks;
 
 import me.assailent.economicadditions.EconomicAdditions;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.title.Title;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.time.Duration;
 
 public class VaultHook {
 
     private static EconomicAdditions plugin = EconomicAdditions.getPlugin();
+    private static ConfigurationSection stockDisplay = plugin.getLangConfig().getConfigurationSection("stockdisplay");
     private static Economy econ = null;
     //private static Permission perms = null;
 

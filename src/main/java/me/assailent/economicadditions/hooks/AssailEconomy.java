@@ -1,20 +1,30 @@
 package me.assailent.economicadditions.hooks;
 
 import me.assailent.economicadditions.EconomicAdditions;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.title.Title;
 import net.milkbowl.vault.economy.AbstractEconomy;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.ServicePriority;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.sql.SQLException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AssailEconomy extends AbstractEconomy {
+
+    private static ConfigurationSection stockDisplay = EconomicAdditions.getPlugin().getLangConfig().getConfigurationSection("stockdisplay");
 
     private AssailEconomy() {
     }
@@ -127,6 +137,35 @@ public class AssailEconomy extends AbstractEconomy {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        OfflinePlayer target = Bukkit.getOfflinePlayer(playerName);
+        if (target.isOnline() && stockDisplay.getInt("min-amount") < amount && stockDisplay.getBoolean("enabled")) {
+            Player player = (Player) target;
+            if (!player.hasMetadata("economicadditions.stockdisplay.toggled") || player.getMetadata("economicadditions.stockdisplay.toggled").get(0).asBoolean()) {
+                new BukkitRunnable() {
+                    float i = (float) (amount * 0.8);
+
+                    @Override
+                    public void run() {
+                        if (i > (amount * 5)) {
+                            cancel();
+                        }
+                        Title.Times times;
+                        if (i == amount) {
+                            times = Title.Times.times(Duration.ZERO, Duration.ofSeconds(1), Duration.ofSeconds(1));
+                            Title title = Title.title(MiniMessage.miniMessage().deserialize(stockDisplay.getString("pos-prefix") + i + stockDisplay.getString("pos-suffix")), Component.empty(), times);
+                            player.showTitle(title);
+                            player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 10, 0);
+                        } else if (i < amount) {
+                            times = Title.Times.times(Duration.ZERO, Duration.ofMillis(75), Duration.ZERO);
+                            Title title = Title.title(MiniMessage.miniMessage().deserialize(stockDisplay.getString("pos-prefix") + i + stockDisplay.getString("pos-suffix")), Component.empty(), times);
+                            player.showTitle(title);
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 10, 0.9F);
+                        }
+                        i += amount * 0.002;
+                    }
+                }.runTaskTimer(plugin, 0, 1);
+            }
+        }
 
         return new EconomyResponse(amount, this.getByName(playerName), EconomyResponse.ResponseType.SUCCESS, "");
     }
@@ -145,6 +184,37 @@ public class AssailEconomy extends AbstractEconomy {
             plugin.getEconomyDatabase().updatePlayerBalance(plugin.getServer().getPlayer(playerName), plugin.getEconomyDatabase().getPlayerBalance(plugin.getServer().getPlayer(playerName)) + amount);
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+
+        OfflinePlayer target = Bukkit.getOfflinePlayer(playerName);
+
+        if (target.isOnline() && stockDisplay.getInt("min-amount") < amount && stockDisplay.getBoolean("enabled")) {
+            Player player = (Player) target;
+            if (!player.hasMetadata("economicadditions.stockdisplay.toggled") || player.getMetadata("economicadditions.stockdisplay.toggled").get(0).asBoolean()) {
+                new BukkitRunnable() {
+                    float i = (float) (amount * 0.8);
+
+                    @Override
+                    public void run() {
+                        if (i > (amount * 5)) {
+                            cancel();
+                        }
+                        Title.Times times;
+                        if (i == amount) {
+                            times = Title.Times.times(Duration.ZERO, Duration.ofSeconds(1), Duration.ofSeconds(1));
+                            Title title = Title.title(MiniMessage.miniMessage().deserialize(stockDisplay.getString("pos-prefix") + i + stockDisplay.getString("pos-suffix")), Component.empty(), times);
+                            player.showTitle(title);
+                            player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 10, 0);
+                        } else if (i < amount) {
+                            times = Title.Times.times(Duration.ZERO, Duration.ofMillis(75), Duration.ZERO);
+                            Title title = Title.title(MiniMessage.miniMessage().deserialize(stockDisplay.getString("pos-prefix") + i + stockDisplay.getString("pos-suffix")), Component.empty(), times);
+                            player.showTitle(title);
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 10, 0.9F);
+                        }
+                        i += amount * 0.002;
+                    }
+                }.runTaskTimer(plugin, 0, 1);
+            }
         }
 
         return new EconomyResponse(amount, this.getBalance(playerName), EconomyResponse.ResponseType.SUCCESS, "");

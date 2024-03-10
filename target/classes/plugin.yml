@@ -27,3 +27,8 @@ commands:
     aliases: ['econgui', 'econ', 'egui', 'eui', 'money']
     description: Opens the economy gui!
     permission: EconomicAdditions.economygui
+  stockdisplay:
+    usage: /stockdisplay
+    aliases: ['toggledisplay', 'togglestock', 'toggletickdisplay', 'stock', 'display', 'tickdisplay']
+    description: Toggles the 'stock' display.
+    permission: EconomicAdditions.stockdisplay

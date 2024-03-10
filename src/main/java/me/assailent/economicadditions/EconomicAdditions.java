@@ -1,6 +1,6 @@
 package me.assailent.economicadditions;
 
-import me.assailent.economicadditions.actionbar.ActionBar;
+import me.assailent.economicadditions.displays.ActionBar;
 import me.assailent.economicadditions.commands.*;
 import me.assailent.economicadditions.database.EconomyDatabase;
 import me.assailent.economicadditions.events.ActionBarJoin;
@@ -14,11 +14,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Objects;
 
 public final class EconomicAdditions extends JavaPlugin {
 
@@ -52,6 +50,8 @@ public final class EconomicAdditions extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new GuiListener(), this);
         getCommand("economygui").setExecutor(new EconomyGuiCommand());
+
+        getCommand("stockdisplay").setExecutor(new StockDisplayCommand());
 
         getServer().getPluginManager().registerEvents(new ActionBarJoin(), this);
         getCommand("toggleactionbar").setExecutor(new ActionBarCommand());

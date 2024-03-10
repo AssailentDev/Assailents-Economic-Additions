@@ -21,6 +21,15 @@ actionbar:
   toggle-on-text: "<green>Action bar toggled ON!"
   toggle-off-text: "<red>Action bar toggled off!"
   sender-not-a-player: "Only players can use this command!"
+stockdisplay:
+  enabled: true
+  min-amount: 2000
+  neg-prefix: "<gray>[<red>-<gray>] "
+  pos-prefix: "<gray>[<green>+<gray>] "
+  neg-suffix: " <gray>Sheeps"
+  pos-suffix: " <gray>Sheeps"
+  toggle-on-text: "<green>Stock Display toggled ON!"
+  toggle-off-text: "<red>Stock Display toggled OFF!"
 gui:
   economy:
     mainMenu:

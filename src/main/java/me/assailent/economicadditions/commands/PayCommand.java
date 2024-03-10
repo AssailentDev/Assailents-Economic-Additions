@@ -62,12 +62,12 @@ public class PayCommand implements TabExecutor {
                     return;
                 }
 
-                VaultHook.take((OfflinePlayer) sender, amount);
-                VaultHook.give(target, amount);
                 sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("success-color") + parse.parse(lang.getString("paid-player"), target.getName(), VaultHook.formatCurrencySymbol(amount))));
                 if (target.isOnline()) {
                     Bukkit.getPlayer(target.getUniqueId()).sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("success-color") + parse.parse(lang.getString("recieved-money"), sender.getName(), VaultHook.formatCurrencySymbol(amount))));
                 }
+                VaultHook.take((OfflinePlayer) sender, amount);
+                VaultHook.give(target, amount);
             }
         }.runTaskAsynchronously(plugin);
         return true;
