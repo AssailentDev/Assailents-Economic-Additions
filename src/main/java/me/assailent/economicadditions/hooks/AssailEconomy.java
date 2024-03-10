@@ -152,14 +152,14 @@ public class AssailEconomy extends AbstractEconomy {
                         Title.Times times;
                         if (i == amount) {
                             times = Title.Times.times(Duration.ZERO, Duration.ofSeconds(1), Duration.ofSeconds(1));
-                            Title title = Title.title(MiniMessage.miniMessage().deserialize(stockDisplay.getString("pos-prefix") + i + stockDisplay.getString("pos-suffix")), Component.empty(), times);
+                            Title title = Title.title(MiniMessage.miniMessage().deserialize(stockDisplay.getString("neg-prefix") + i + stockDisplay.getString("neg-suffix")), Component.empty(), times);
                             player.showTitle(title);
                             player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 10, 0);
                         } else if (i < amount) {
                             times = Title.Times.times(Duration.ZERO, Duration.ofMillis(75), Duration.ZERO);
-                            Title title = Title.title(MiniMessage.miniMessage().deserialize(stockDisplay.getString("pos-prefix") + i + stockDisplay.getString("pos-suffix")), Component.empty(), times);
+                            Title title = Title.title(MiniMessage.miniMessage().deserialize(stockDisplay.getString("neg-prefix") + i + stockDisplay.getString("neg-suffix")), Component.empty(), times);
                             player.showTitle(title);
-                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 10, 0.9F);
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 10, 0.1F);
                         }
                         i += amount * 0.002;
                     }
