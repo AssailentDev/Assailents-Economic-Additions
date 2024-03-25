@@ -9,8 +9,8 @@ https://www.spigotmc.org/resources/placeholderapi.6245/
 ## Commands & Permissions
 As the Introduction says, with the goal to stay bloat free there are only a couple commands.
 ### Admin Commands
-* /economy <bal | give | take> \<player> \<amount> \
-Get the balance of a player, give the player money, or take money from the player. \
+* /economy <bal | give | take | set> \<player> \<amount> \
+Get the balance of a player, give the player money, take money from the player, or set the player's balance. \
 Permission Required: `EconomicAdditions.economygui` \
 Aliases: N/A
 
@@ -62,7 +62,7 @@ Normal Configuration, \
 Items.
 
 ### Normal Configuration
-This is pretty straight forward. Things like `starting-money: 1500` mean that players start with 1500. And doesn't require much thought. This is also where almost EVERY message in the plugin can be customised (Including translated or completely different messages. (Note: not everything in the first `economy` section will have access to PlaceholderAPI sadly. This will be fixed in a future update as well as a cleanup of the config!
+This is pretty straight forward. Things like `starting-money: 1500` mean that players start with 1500. And doesn't require much thought. This is also where almost EVERY message in the plugin can be customised (Including translated or completely different messages.
 
 ### Items
 Items are mainly defined within the `gui/economy:` section; and have a few key features! \
@@ -94,47 +94,49 @@ TestItem:
    Custom model data is only useful if you know what you're doing!
 
 ### Full Config Files
-#### Config.yml
-```yml
-prefix: "<gray>[<gold>Economic Additions<gray>] "
-```
 
 #### Lang.yml
 ```yml
-economy:
+common:
+  prefix: "<gray>[<gold>Economic Additions<gray>] "
   currency-singular: "Sheep"
   currency-plural: "Sheeps"
   starting-money: 1500
   error-color: "<#EB7272>"
   success-color: "<#A6F8C6>"
+  non-valid-number: "The amount must be a valid decimal number. Got: "
   sender-not-a-player: "Only players can use this command!"
-  target-hasnt-played-before: "The player %parse% has never played on this server before!"
-  balance: "%parse%'s balance: %currency%"
-  non-valid-number: "The amount must be a valid decimal number. Got: '%parse%'."
+  target-hasnt-player-before: "The player %parse% has never played on this server before!"
+  no-permission: "You don't have permission for this command!"
+economy:
   took-money: "Took %currency% from %parse%'s account."
   gave-money: "Gave %currency% to %parse%'s account."
-  not-enough-money: "You don't have enough money to pay %parse%"
+  set-money: "Set %parse%'s account to %currency%."
+  balance: "%parse%'s balance: %currency%"
   paid-player: "You paid %parse% %currency%"
   recieved-money: "You were paid %currency% from %parse%"
-  no-permission: "You don't have permission for this command!"
+  not-enough-money: "You don't have enough money for that!"
 actionbar:
   enabled: true
   update: 2
   text: "<gray>%vault_eco_balance% Sheeps"
-  toggle-on-text: "<green>Action bar toggled ON!"
-  toggle-off-text: "<red>Action bar toggled off!"
-  sender-not-a-player: "Only players can use this command!"
+  toggle-on-text: "Action bar toggled ON!"
+  toggle-off-text: "Action bar toggled OFF!"
 stockdisplay:
   enabled: true
   min-amount: 2000
-  neg-prefix: "<gray>[<red>-<gray>] "
-  pos-prefix: "<gray>[<green>+<gray>] "
-  neg-suffix: " <gray>Sheeps"
-  pos-suffix: " <gray>Sheeps"
-  toggle-on-text: "<green>Stock Display toggled ON!"
-  toggle-off-text: "<red>Stock Display toggled OFF!"
+  negative:
+    prefix: "<gray>[<red>-<gray>] "
+    suffix: " <gray>Sheeps"
+  positive:
+    prefix: "<gray>[<green>+<gray>] "
+    suffix: " <gray>Sheeps"
+  toggle-on-text: "Stock Display toggled ON!"
+  toggle-off-text: "Stock Display toggled OFF!"
 gui:
   economy:
+    messages:
+      cancel-payment: "Cancelling Payment!"
     mainMenu:
       Title: "Economic Additions"
       payItem:
@@ -163,58 +165,58 @@ gui:
         Amount: 1
         Title: ""
     payMenu:
-      Title: "Pay Ui"
-      pay-message: "<green>How much would you like to pay?"
+      Title: "ᴘᴀʏ ᴘʟᴀʏᴇʀꜱ"
+      pay-message: "How much would you like to pay?"
       nextFullItem:
         Material: "LIME_DYE"
         Amount: 1
-        Title: "<green>Next Page!"
+        Title: "<green>ɴᴇxᴛ ᴘᴀɢᴇ"
       nextEmptyItem:
         Material: "GRAY_DYE"
         Amount: 1
-        Title: "<gray>Next Page!"
+        Title: "<gray>ɴᴇxᴛ ᴘᴀɢᴇ"
       prevFullItem:
         Material: "LIME_DYE"
         Amount: 1
-        Title: "<green>Previous Page!"
+        Title: "<green>ᴘʀᴇᴠɪᴏᴜꜱ ᴘᴀɢᴇ"
       prevEmptyItem:
         Material: "GRAY_DYE"
         Amount: 1
-        Title: "<gray>Previous Page!"
+        Title: "<gray>ᴘʀᴇᴠɪᴏᴜꜱ ᴘᴀɢᴇ"
       playerHead:
         Material: "PLAYERHEAD"
         Amount: 1
-        Title: "<gold>%player_displayname%"
+        Title: "<#C7FFEA>%player_displayname%"
         Lore:
-          - "Left Click to pay this player!"
+          - "<#A2A2A2>Left Click to pay this player!"
       emptyItem:
         Material: "GRAY_STAINED_GLASS_PANE"
         Amount: 1
         Title: ""
     balMenu:
-      Title: "Balances UI"
+      Title: "ᴘʟᴀʏᴇʀ ʙᴀʟᴀɴᴄᴇꜱ"
       nextFullItem:
         Material: "LIME_DYE"
         Amount: 1
-        Title: "<green>Next Page!"
+        Title: "<green>ɴᴇxᴛ ᴘᴀɢᴇ"
       nextEmptyItem:
         Material: "GRAY_DYE"
         Amount: 1
-        Title: "<gray>Next Page!"
+        Title: "<gray>ɴᴇxᴛ ᴘᴀɢᴇ"
       prevFullItem:
         Material: "LIME_DYE"
         Amount: 1
-        Title: "<green>Previous Page!"
+        Title: "<green>ᴘʀᴇᴠɪᴏᴜꜱ ᴘᴀɢᴇ"
       prevEmptyItem:
         Material: "GRAY_DYE"
         Amount: 1
-        Title: "<gray>Previous Page!"
+        Title: "<gray>ᴘʀᴇᴠɪᴏᴜꜱ ᴘᴀɢᴇ"
       playerHead:
         Material: "PLAYERHEAD"
         Amount: 1
-        Title: "<gold>%player_displayname%'s Balance"
+        Title: "<#C7FFEA>%player_displayname%'s Balance"
         Lore:
-          - "%vault_eco_balance% Sheeps!"
+          - "<#A2A2A2>%vault_eco_balance% Sheeps!"
       emptyItem:
         Material: "GRAY_STAINED_GLASS_PANE"
         Amount: 1
