@@ -24,8 +24,7 @@ public class BalanceCommand implements TabExecutor {
 
     private static EconomicAdditions plugin = EconomicAdditions.getPlugin();
     private static ConfigurationSection lang = plugin.getLangConfig().getConfigurationSection("economy");
-    private static Parsing parse = EconomicAdditions.getParser();
-    private static String prefix = plugin.getConfig().getString("prefix");
+    private static Parsing parsing = new Parsing();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
@@ -43,26 +42,26 @@ public class BalanceCommand implements TabExecutor {
             public void run() {
                 if (args.length == 0) {
                     double balance = VaultHook.getBalance((OfflinePlayer) sender);
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("success-color") + parse.parse(lang.getString("balance"), sender.getName(), VaultHook.formatCurrencySymbol(balance))));
+                    sender.sendMessage(parsing.parse(parsing.prefix + parsing.successColor + parsing.economy.getString("balance"), sender.getName(), VaultHook.formatCurrencySymbol(balance)));
                     return;
                 } else {
                     if (!sender.hasPermission("EconomyAdditions.balance.others")) {
-                        sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("error-color") + lang.getString("no-permission")));
+                        sender.sendMessage(parsing.parse(parsing.prefix + parsing.errorColor + parsing.common.getString("no-permission"), null, null));
                     }
                 }
 
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
                 if (!target.hasPlayedBefore()) {
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("error-color") + parse.parse(lang.getString("target-hasnt-played-before"), args[0], "")));
+                    sender.sendMessage(parsing.parse(parsing.prefix + parsing.errorColor + parsing.common.getString("target-hasnt-played-before"), args[0], null));
                     return;
                 }
                 if (!target.isOnline()) {
                     double balance = VaultHook.getBalance(target);
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("success-color") + parse.parse(lang.getString("balance"), target.getName(), VaultHook.formatCurrencySymbol(balance))));
+                    sender.sendMessage(parsing.parse(parsing.prefix + parsing.successColor + parsing.economy.getString("balance"), target.getName(), VaultHook.formatCurrencySymbol(balance)));
                     return;
                 }
                 double balance = VaultHook.getBalance(target);
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("success-color") + parse.parse(lang.getString("balance"), target.getName(), VaultHook.formatCurrencySymbol(balance))));
+                sender.sendMessage(parsing.parse(parsing.prefix + parsing.successColor + parsing.economy.getString("balance"), target.getName(), VaultHook.formatCurrencySymbol(balance)));
                 return;
             }
         }.runTaskAsynchronously(plugin);

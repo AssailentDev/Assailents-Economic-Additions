@@ -1,6 +1,7 @@
 package me.assailent.economicadditions.hooks;
 
 import me.assailent.economicadditions.EconomicAdditions;
+import me.assailent.economicadditions.utilities.Parsing;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.title.Title;
@@ -23,8 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 public class AssailEconomy extends AbstractEconomy {
-
-    private static ConfigurationSection stockDisplay = EconomicAdditions.getPlugin().getLangConfig().getConfigurationSection("stockdisplay");
+    private static Parsing parsing = new Parsing();
 
     private AssailEconomy() {
     }
@@ -56,12 +56,12 @@ public class AssailEconomy extends AbstractEconomy {
 
     @Override
     public String currencyNamePlural() {
-        return plugin.getLangConfig().getConfigurationSection("economy").getString("currency-plural");
+        return plugin.getLangConfig().getConfigurationSection("common").getString("currency-plural");
     }
 
     @Override
     public String currencyNameSingular() {
-        return plugin.getLangConfig().getConfigurationSection("economy").getString("currency-singular");
+        return plugin.getLangConfig().getConfigurationSection("common").getString("currency-singular");
     }
 
     @Override
@@ -138,10 +138,11 @@ public class AssailEconomy extends AbstractEconomy {
             throw new RuntimeException(e);
         }
         OfflinePlayer target = Bukkit.getOfflinePlayer(playerName);
-        if (target.isOnline() && stockDisplay.getInt("min-amount") < amount && stockDisplay.getBoolean("enabled")) {
+        if (target.isOnline() && parsing.stockdisplay.getInt("min-amount") < amount && parsing.stockdisplay.getBoolean("enabled")) {
             Player player = (Player) target;
             if (!player.hasMetadata("economicadditions.stockdisplay.toggled") || player.getMetadata("economicadditions.stockdisplay.toggled").get(0).asBoolean()) {
-                new BukkitRunnable() {
+                ConfigurationSection negative = parsing.stockdisplay.getConfigurationSection("negative");
+                        new BukkitRunnable() {
                     float i = (float) (amount * 0.8);
 
                     @Override
@@ -152,12 +153,12 @@ public class AssailEconomy extends AbstractEconomy {
                         Title.Times times;
                         if (i == amount) {
                             times = Title.Times.times(Duration.ZERO, Duration.ofSeconds(1), Duration.ofSeconds(1));
-                            Title title = Title.title(MiniMessage.miniMessage().deserialize(stockDisplay.getString("neg-prefix") + i + stockDisplay.getString("neg-suffix")), Component.empty(), times);
+                            Title title = Title.title(parsing.parse(negative.getString("prefix") + i + negative.getString("suffix"), null, null), Component.empty(), times);
                             player.showTitle(title);
                             player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 10, 0);
                         } else if (i < amount) {
                             times = Title.Times.times(Duration.ZERO, Duration.ofMillis(75), Duration.ZERO);
-                            Title title = Title.title(MiniMessage.miniMessage().deserialize(stockDisplay.getString("neg-prefix") + i + stockDisplay.getString("neg-suffix")), Component.empty(), times);
+                            Title title = Title.title(parsing.parse(negative.getString("prefix") + i + negative.getString("suffix"), null, null), Component.empty(), times);
                             player.showTitle(title);
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 10, 0.1F);
                         }
@@ -188,9 +189,10 @@ public class AssailEconomy extends AbstractEconomy {
 
         OfflinePlayer target = Bukkit.getOfflinePlayer(playerName);
 
-        if (target.isOnline() && stockDisplay.getInt("min-amount") < amount && stockDisplay.getBoolean("enabled")) {
+        if (target.isOnline() && parsing.stockdisplay.getInt("min-amount") < amount && parsing.stockdisplay.getBoolean("enabled")) {
             Player player = (Player) target;
             if (!player.hasMetadata("economicadditions.stockdisplay.toggled") || player.getMetadata("economicadditions.stockdisplay.toggled").get(0).asBoolean()) {
+                ConfigurationSection positive = parsing.stockdisplay.getConfigurationSection("positive");
                 new BukkitRunnable() {
                     float i = (float) (amount * 0.8);
 
@@ -202,12 +204,12 @@ public class AssailEconomy extends AbstractEconomy {
                         Title.Times times;
                         if (i == amount) {
                             times = Title.Times.times(Duration.ZERO, Duration.ofSeconds(1), Duration.ofSeconds(1));
-                            Title title = Title.title(MiniMessage.miniMessage().deserialize(stockDisplay.getString("pos-prefix") + i + stockDisplay.getString("pos-suffix")), Component.empty(), times);
+                            Title title = Title.title(parsing.parse(positive.getString("prefix") + i + positive.getString("suffix"), null, null), Component.empty(), times);
                             player.showTitle(title);
                             player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 10, 0);
                         } else if (i < amount) {
                             times = Title.Times.times(Duration.ZERO, Duration.ofMillis(75), Duration.ZERO);
-                            Title title = Title.title(MiniMessage.miniMessage().deserialize(stockDisplay.getString("pos-prefix") + i + stockDisplay.getString("pos-suffix")), Component.empty(), times);
+                            Title title = Title.title(parsing.parse(positive.getString("prefix") + i + positive.getString("suffix"), null, null), Component.empty(), times);
                             player.showTitle(title);
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_COW_BELL, 10, 0.9F);
                         }

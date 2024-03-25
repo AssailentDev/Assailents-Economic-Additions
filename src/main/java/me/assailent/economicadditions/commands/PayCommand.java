@@ -23,13 +23,11 @@ import java.util.List;
 public class PayCommand implements TabExecutor {
 
     private static EconomicAdditions plugin = EconomicAdditions.getPlugin();
-    private static ConfigurationSection lang = plugin.getLangConfig().getConfigurationSection("economy");
-    private static Parsing parse = EconomicAdditions.getParser();
-    private static String prefix = plugin.getConfig().getString("prefix");
+    private static Parsing parsing = new Parsing();
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(lang.getString("sender-not-a-player"));
+            sender.sendMessage(parsing.common.getString("sender-not-a-player"));
             return true;
         }
 
@@ -45,7 +43,7 @@ public class PayCommand implements TabExecutor {
                 OfflinePlayer target = Bukkit.getOfflinePlayer(args[0]);
 
                 if (!target.hasPlayedBefore() && !target.isOnline()) {
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("error-color") + parse.parse(lang.getString("target-hasnt-played-before"), args[0], "")));
+                    sender.sendMessage(parsing.parse(parsing.prefix + parsing.errorColor + parsing.common.getString("target-hasnt-played-before"), args[0], ""));
                     return;
                 }
 
@@ -53,18 +51,17 @@ public class PayCommand implements TabExecutor {
                 try {
                     amount = Double.parseDouble(args[1]);
                 } catch(NumberFormatException e) {
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("error-color") + parse.parse(lang.getString("non-valid-number"), args[1], "")));
+                    sender.sendMessage(parsing.parse(parsing.prefix + parsing.errorColor + parsing.common.getString("non-valid-number"), args[1], ""));
                     return;
                 }
 
                 if(Double.parseDouble(args[1])>VaultHook.getBalance((OfflinePlayer)sender)) {
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("error-color") + parse.parse(lang.getString("not-enough-money"), args[1], "")));
+                    sender.sendMessage(parsing.parse(parsing.prefix + parsing.errorColor + parsing.economy.getString("not-enough-money"), null, null));
                     return;
                 }
-
-                sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("success-color") + parse.parse(lang.getString("paid-player"), target.getName(), VaultHook.formatCurrencySymbol(amount))));
+                sender.sendMessage(parsing.parse(parsing.prefix + parsing.successColor + parsing.economy.getString("paid-player"), target.getName(), VaultHook.formatCurrencySymbol(amount)));
                 if (target.isOnline()) {
-                    Bukkit.getPlayer(target.getUniqueId()).sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("success-color") + parse.parse(lang.getString("recieved-money"), sender.getName(), VaultHook.formatCurrencySymbol(amount))));
+                    Bukkit.getPlayer(target.getUniqueId()).sendMessage(parsing.parse(parsing.prefix + parsing.successColor + parsing.economy.getString("recieved-money"), sender.getName(), VaultHook.formatCurrencySymbol(amount)));
                 }
                 VaultHook.take((OfflinePlayer) sender, amount);
                 VaultHook.give(target, amount);

@@ -10,7 +10,7 @@ public class EconomyDatabase {
 
     private final Connection connection;
 
-    private ConfigurationSection economy = EconomicAdditions.getPlugin().getLangConfig().getConfigurationSection("economy");
+    private ConfigurationSection economy = EconomicAdditions.getPlugin().getLangConfig().getConfigurationSection("common");
 
     public EconomyDatabase(String path) throws SQLException {
         connection = DriverManager.getConnection("jdbc:sqlite:" + path); // Needed for every database

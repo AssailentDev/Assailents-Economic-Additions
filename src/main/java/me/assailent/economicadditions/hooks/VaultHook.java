@@ -20,7 +20,6 @@ import java.time.Duration;
 public class VaultHook {
 
     private static EconomicAdditions plugin = EconomicAdditions.getPlugin();
-    private static ConfigurationSection stockDisplay = plugin.getLangConfig().getConfigurationSection("stockdisplay");
     private static Economy econ = null;
     //private static Permission perms = null;
 

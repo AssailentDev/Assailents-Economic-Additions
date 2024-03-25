@@ -3,11 +3,10 @@ package me.assailent.economicadditions;
 import me.assailent.economicadditions.displays.ActionBar;
 import me.assailent.economicadditions.commands.*;
 import me.assailent.economicadditions.database.EconomyDatabase;
-import me.assailent.economicadditions.events.ActionBarJoin;
+import me.assailent.economicadditions.events.EconomyJoin;
 import me.assailent.economicadditions.events.GuiListener;
 import me.assailent.economicadditions.hooks.AssailEconomy;
 import me.assailent.economicadditions.hooks.VaultHook;
-import me.assailent.economicadditions.utilities.Parsing;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -23,7 +22,6 @@ public final class EconomicAdditions extends JavaPlugin {
     private EconomyDatabase economyDatabase;
     private VaultHook vaultHook;
     private static EconomicAdditions plugin;
-    private static Parsing parser;
 
     private File langConfigFile;
     private FileConfiguration langConfig;
@@ -31,11 +29,21 @@ public final class EconomicAdditions extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        parser = new Parsing();
         plugin = this;
-        saveResource("config.yml", false);
-        saveDefaultConfig();
         createLangConfig();
+
+        try {
+
+            if (!getDataFolder().exists()) {
+                getDataFolder().mkdirs();
+            }
+
+            economyDatabase = new EconomyDatabase(getDataFolder().getAbsolutePath() + "/balances.db");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Bukkit.getLogger().severe("Failed to connect to the database! " + e.getMessage());
+            Bukkit.getPluginManager().disablePlugin(this);
+        }
 
         if (getServer().getPluginManager().getPlugin("Vault") != null) {
             AssailEconomy.register();
@@ -53,7 +61,7 @@ public final class EconomicAdditions extends JavaPlugin {
 
         getCommand("stockdisplay").setExecutor(new StockDisplayCommand());
 
-        getServer().getPluginManager().registerEvents(new ActionBarJoin(), this);
+        getServer().getPluginManager().registerEvents(new EconomyJoin(), this);
         getCommand("toggleactionbar").setExecutor(new ActionBarCommand());
 
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null && langConfig.getConfigurationSection("actionbar").getBoolean("enabled")) {
@@ -62,19 +70,6 @@ public final class EconomicAdditions extends JavaPlugin {
         } else {
             getLogger().warning("Could not find PlaceholderAPI! This plugin is required!");
             getServer().getPluginManager().disablePlugin(this);
-        }
-
-        try {
-
-            if (!getDataFolder().exists()) {
-                getDataFolder().mkdirs();
-            }
-
-            economyDatabase = new EconomyDatabase(getDataFolder().getAbsolutePath() + "/balances.db");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            Bukkit.getLogger().severe("Failed to connect to the database! " + e.getMessage());
-            Bukkit.getPluginManager().disablePlugin(this);
         }
     }
 
@@ -109,7 +104,6 @@ public final class EconomicAdditions extends JavaPlugin {
     }
 
     public static EconomicAdditions getPlugin() { return plugin; }
-    public static Parsing getParser() {return parser; }
     public EconomyDatabase getEconomyDatabase() {
         return this.economyDatabase;
     }

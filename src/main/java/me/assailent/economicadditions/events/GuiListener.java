@@ -6,6 +6,7 @@ import me.assailent.economicadditions.EconomicAdditions;
 import me.assailent.economicadditions.menus.EconomyMainMenu;
 import me.assailent.economicadditions.utilities.GetKeys;
 import me.assailent.economicadditions.utilities.NBTApi;
+import me.assailent.economicadditions.utilities.Parsing;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
@@ -26,6 +27,7 @@ import java.util.UUID;
 public class GuiListener implements Listener {
 
     private EconomicAdditions plugin = EconomicAdditions.getPlugin();
+    private static Parsing parsing = new Parsing();
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
@@ -61,7 +63,7 @@ public class GuiListener implements Listener {
             try {
                 payAmount = Integer.valueOf(MiniMessage.miniMessage().serialize(event.originalMessage()));
                 if (payAmount <= 0) {
-                    event.getPlayer().sendMessage(MiniMessage.miniMessage().deserialize("<red>Cancelling Payment!"));
+                    event.getPlayer().sendMessage(parsing.parse(parsing.errorColor + parsing.guimessages.getString("cancel-payment"), null, null));
                     event.setCancelled(true);
                     event.getPlayer().removeMetadata("economicadditions.economy.gui.pay.command", plugin);
                 }
@@ -71,7 +73,7 @@ public class GuiListener implements Listener {
                 EconomyMainMenu.openInv(event.getPlayer());
                 event.getPlayer().removeMetadata("economicadditions.economy.gui.pay.command", plugin);
             } catch (NumberFormatException e) {
-                event.getPlayer().sendMessage(MiniMessage.miniMessage().deserialize("<red>Cancelling Payment!"));
+                event.getPlayer().sendMessage(parsing.parse(parsing.errorColor + parsing.guimessages.getString("cancel-payment"), null, null));
                 event.setCancelled(true);
                 event.getPlayer().removeMetadata("economicadditions.economy.gui.pay.command", plugin);
             }

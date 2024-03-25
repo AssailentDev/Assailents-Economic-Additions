@@ -6,7 +6,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
-public class ActionBarJoin implements Listener {
+import java.sql.SQLException;
+
+public class EconomyJoin implements Listener {
     private EconomicAdditions plugin = EconomicAdditions.getPlugin();
 
     @EventHandler
@@ -15,5 +17,13 @@ public class ActionBarJoin implements Listener {
             event.getPlayer().setMetadata("economicadditions.actionbar.toggled", new FixedMetadataValue(plugin, true));
         }
         event.getPlayer().setMetadata("economicadditions.actionbar.toggled", new FixedMetadataValue(plugin, true));
+
+        try {
+            if (!(plugin.getEconomyDatabase().playerExists(event.getPlayer()))) {
+                plugin.getEconomyDatabase().addPlayer(event.getPlayer());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

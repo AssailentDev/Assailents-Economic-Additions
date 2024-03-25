@@ -2,6 +2,7 @@ package me.assailent.economicadditions.menus;
 
 import me.assailent.economicadditions.EconomicAdditions;
 import me.assailent.economicadditions.utilities.GetKeys;
+import me.assailent.economicadditions.utilities.Parsing;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -20,6 +21,7 @@ public class EconomyMainMenu {
     private static ConfigurationSection payMenu = EconomicAdditions.getPlugin().getLangConfig().getConfigurationSection("gui").getConfigurationSection("economy").getConfigurationSection("payMenu");
     private static ConfigurationSection balMenu = EconomicAdditions.getPlugin().getLangConfig().getConfigurationSection("gui").getConfigurationSection("economy").getConfigurationSection("balMenu");
     private static ConfigurationSection lang = EconomicAdditions.getPlugin().getLangConfig();
+    private static Parsing parsing = new Parsing();
     private static ConfigurationSection config = EconomicAdditions.getPlugin().getConfig();
 
     public static void onPayClick(Player player) {
@@ -81,7 +83,7 @@ public class EconomyMainMenu {
 
     public static void onPayHeadClick(Player player, String uuidString) {
         player.closeInventory();
-        player.sendMessage(MiniMessage.miniMessage().deserialize(config.getString("prefix") + payMenu.getString("pay-message")));
+        player.sendMessage(parsing.parse(parsing.prefix + parsing.successColor +  parsing.payMenu.getString("pay-message"), null, null));
         player.setMetadata("economicadditions.economy.gui.pay.command", new FixedMetadataValue(EconomicAdditions.getPlugin(), uuidString));
     }
 

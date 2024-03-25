@@ -26,14 +26,12 @@ public class EconomyCommand implements TabExecutor {
 
     private static EconomicAdditions plugin = EconomicAdditions.getPlugin();
     private static ConfigurationSection lang = plugin.getLangConfig().getConfigurationSection("economy");
-    private static Parsing parse = EconomicAdditions.getParser();
-    private static String prefix = plugin.getConfig().getString("prefix");
+    private static Parsing parsing = new Parsing();
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(lang.getString("sender-not-a-player"));
-
+            sender.sendMessage(parsing.common.getString("sender-not-a-player"));
             return true;
         }
 
@@ -52,7 +50,7 @@ public class EconomyCommand implements TabExecutor {
                 OfflinePlayer target = Bukkit.getOfflinePlayer(playerName);
 
                 if (!target.hasPlayedBefore()) {
-                    sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("error-color") + parse.parse(lang.getString("target-hasnt-played-before"), playerName, "")));
+                    sender.sendMessage(parsing.parse(parsing.prefix + parsing.errorColor + parsing.common.getString("target-hasnt-played-before"), playerName, ""));
                     return;
                 }
 
@@ -61,36 +59,48 @@ public class EconomyCommand implements TabExecutor {
                     @Override
                     public void run() {
                         if (!VaultHook.hasEconomy()) {
-                            sender.sendMessage(ChatColor.RED + "Vault plugin not found or it did not find any compatible Economy plugin.");
+                            sender.sendMessage(parsing.parse(parsing.errorColor + "Vault plugin not found or it did not find any compatible Economy plugin.", null, null));
                             return;
                         }
 
                         if ("bal".equals(param)) {
                             double balance = VaultHook.getBalance(target);
-                            sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("success-color") + parse.parse(lang.getString("balance"), playerName, VaultHook.formatCurrencySymbol(balance))));
-                        } else if ("take".equals(param) || "give".equals(param)) {
+                            sender.sendMessage(parsing.parse(parsing.prefix + parsing.successColor + parsing.economy.getString("balance"), playerName, VaultHook.formatCurrencySymbol(balance)));
+                        } else if ("take".equals(param) || "give".equals(param) || "set".equals(param)) {
                             double amount;
                             try {
                                 amount = Double.parseDouble(amountRaw);
                             } catch (NumberFormatException e) {
-                                sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("error-color") + parse.parse(lang.getString("non-valid-number"), amountRaw, "")));
+                                sender.sendMessage(parsing.parse(parsing.prefix + parsing.errorColor + parsing.common.getString("non-valid-number"), amountRaw, null));
                                 return;
                             }
                             if ("take".equals(param)) {
                                 String errorMessage = VaultHook.take(target, amount);
-
                                 if (errorMessage != null && !errorMessage.isEmpty())
-                                    sender.sendMessage(ChatColor.RED + "Error: " + errorMessage);
+                                    sender.sendMessage(parsing.parse(parsing.errorColor + "Error: " + errorMessage, null, null));
                                 else {
-                                    sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("success-color") + parse.parse(lang.getString("took-money"), playerName, VaultHook.formatCurrencySymbol(amount))));
+                                    sender.sendMessage(parsing.parse(parsing.prefix + parsing.successColor + parsing.economy.getString("took-money"), playerName, VaultHook.formatCurrencySymbol(amount)));
                                 }
+                            } else if ("set".equals(param)) {
+                                String errorMessage;
+                                if (amount > VaultHook.getBalance(target)) {
+                                    errorMessage = VaultHook.give(target, amount - VaultHook.getBalance(target));
+                                } else if (amount == VaultHook.getBalance(target)) {
+                                    errorMessage = VaultHook.give(target, 0);
+                                } else {
+                                    errorMessage = VaultHook.take(target, VaultHook.getBalance(target) - amount);
+                                }
+                                if (errorMessage != null && !errorMessage.isEmpty())
+                                    sender.sendMessage(parsing.parse(parsing.errorColor + "Error: " + errorMessage, null, null));
+                                else
+                                    sender.sendMessage(parsing.parse(parsing.prefix + parsing.successColor + parsing.economy.getString("set-money"), playerName, VaultHook.formatCurrencySymbol(amount)));
                             } else {
                                 String errorMessage = VaultHook.give(target, amount);
 
                                 if (errorMessage != null && !errorMessage.isEmpty())
-                                    sender.sendMessage(ChatColor.RED + "Error: " + errorMessage);
+                                    sender.sendMessage(parsing.parse(parsing.errorColor + "Error: " + errorMessage, null, null));
                                 else {
-                                    sender.sendMessage(MiniMessage.miniMessage().deserialize(prefix + lang.getString("success-color") + parse.parse(lang.getString("gave-money"), playerName, VaultHook.formatCurrencySymbol(amount))));
+                                    sender.sendMessage(parsing.parse(parsing.prefix + parsing.successColor + parsing.economy.getString("give-money"), playerName, VaultHook.formatCurrencySymbol(amount)));
                                 }
                             }
                         } else {
@@ -111,9 +121,10 @@ public class EconomyCommand implements TabExecutor {
             actions.add("bal");
             actions.add("give");
             actions.add("take");
+            actions.add("set");
             return actions;
         }
-        if (args[0].equals("give") || args[0].equals("take")) {
+        if (args[0].equals("give") || args[0].equals("take") || args[0].equals("set")) {
             if (args.length == 2) {
                 List<String> playerNames = new ArrayList<>();
                 Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
