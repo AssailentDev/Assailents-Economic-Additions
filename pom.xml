@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.assailent</groupId>
-    <artifactId>EconomicAdditions</artifactId>
-    <version>0.0.4</version>
+    <artifactId>AssailentEconomicAdditions-1.20.4</artifactId>
+    <version>0.0.6</version>
     <packaging>jar</packaging>
 
     <name>EconomicAdditions</name>
